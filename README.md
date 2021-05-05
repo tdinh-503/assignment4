@@ -15,21 +15,7 @@ You are only to turn in via Gradescope the updated hash_table.c code !
 #1. (40pts) Write a subroutine to count the number of collisions for a hash table 
 that has been filled. You are given a declaration of a function here: 
 
-int hash_table_collisions(struct hash_table* hash_table) {
-  /*
-   * This function should count the number of collisions in the hash table
-   *
-   * this would essentially be the total number of elements above 1 for each 
-   * "bucket" or hash array index. If there is only one element associated 
-   * with a bucket, it would not count as a collision. Two elements would count
-   * as one collision, three elements would count as 2 collisions and so on. 
-   */
-  int num_col = 0;
-  
-  // code goes here: 
-
-  return num_col;
-}
+int hash_table_collisions(struct hash_table* hash_table);
 
 Clearly, nothing is done yet. You are to loop through the array, then 
 traverse the linked list, and count the number of collisions. 
