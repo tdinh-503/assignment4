@@ -141,22 +141,24 @@ int hash_table_remove(struct hash_table* hash_table, int (*hf)(struct hash_table
   
   // in this case the key is associated with the first node 
   struct node* temp = hash_table->array[hash_index];
-  if( temp != NULL && strcmp(temp->key,key) ) {    
-    printf("removing %s from hash table.", key);
-    hash_table->array[hash_index] = temp->next;
-    assert(temp->key);
-    //free(temp->key);
-    assert(temp);
-    free(temp);
-    hash_table->total--;
-    return 1;
+  if( temp != NULL ) {
+    if( strcmp(temp->key,key) == 0) {    
+      printf("removing %s from hash table, should match %s\n", temp->key, key);
+      hash_table->array[hash_index] = temp->next;
+      assert(temp->key);
+      //free(temp->key);
+      assert(temp);
+      free(temp);
+      hash_table->total--;
+      return 1;
+    }
   }
 
   // in this case the product is not the first one 
   // define another node "prev" for the previous node. 
   struct node* prev;
 
-  while (temp != NULL && temp->key != key) {
+  while (temp != NULL && strcmp(temp->key, key) != 0) {
     prev = temp;
     temp = temp->next;    
   }
