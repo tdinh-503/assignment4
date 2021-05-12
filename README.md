@@ -27,6 +27,6 @@ the hash_function1(). Initially, they are the same.
 Your code should confirm that the number of collisions, counted by the function you
 wrote for part #1, should reduce.
 
-The lowest number of possible collisions for 11 elements, and 8 slots is 3. If you get the collisions down to 3, you will recieve full points. For each collision above that, you will lose 4 points. Be creative with your hash_functions!!! 
+The lowest number of possible collisions for 11 elements, and 8 slots is 3. To get full credit, the number of collisions should be less than 6 (so 5 or fewer) Be creative with your hash_functions!!! 
 
 Note that both hash functions are passed to the hash_table code as a pointer to a function. Both functions are defined within hash_table.c, but only the second one is to be modified. 
