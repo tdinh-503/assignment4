@@ -25,7 +25,7 @@ struct hash_table {
 
 /*
  * Returns: a hash code of an input string "key"
- * 
+ *
  * input: the hash_table (to get the size) and a key
  */
 
@@ -36,14 +36,14 @@ int hash_function1(struct hash_table* hash_table, char* key) {
 
 /*
  * Returns: a hash code of an input string "key"
- * 
+ *
  * input: the hash_table (to get the size) and a key
  */
 
 int hash_function2(struct hash_table* hash_table, char* key) {
   /*
-   * Currently this is the same as hash_function2, but your assignment is 
-   * to modify it to create an improved hash function: 
+   * Currently this is the same as hash_function2, but your assignment is
+   * to modify it to create an improved hash function:
    */
 
   return ( (int) key[0] ) % hash_table->size;
@@ -55,7 +55,7 @@ struct hash_table* hash_table_create(int array_size) {
   hash_table->total = 0;
   hash_table->size = array_size;
 
-  // allocate memory for the array, assign lists to NULL 
+  // allocate memory for the array, assign lists to NULL
   hash_table->array = malloc(array_size * sizeof(struct node*));
 
   // assign each term to NULL
@@ -72,7 +72,7 @@ void hash_table_free(struct hash_table* hash_table) {
   /*
    * loop through the array, and delete each node
    */
-  for(int i=0; i < hash_table->size; i++) {  
+  for(int i=0; i < hash_table->size; i++) {
     struct node* current = hash_table->array[i];
     while (current != NULL) {
       hash_table->array[i] = current->next;
@@ -91,7 +91,7 @@ void hash_table_reset(struct hash_table* hash_table) {
   /*
    * loop through the array, and delete each node
    */
-  for(int i=0; i < hash_table->size; i++) {  
+  for(int i=0; i < hash_table->size; i++) {
     struct node* current = hash_table->array[i];
     while (current != NULL) {
       hash_table->array[i] = current->next;
@@ -110,8 +110,8 @@ void hash_table_reset(struct hash_table* hash_table) {
 void hash_table_add(struct hash_table* hash_table, int (*hf)(struct hash_table*, char*), char* key, int value) {
   assert(hash_table);
   /*
-   * Fill out the new node at put it at the beginning of the linked list 
-   * for the hash index, defined using the key/name of the product 
+   * Fill out the new node at put it at the beginning of the linked list
+   * for the hash index, defined using the key/name of the product
    */
   struct node* new_node = malloc(sizeof(struct node));
   assert(new_node);
@@ -124,7 +124,7 @@ void hash_table_add(struct hash_table* hash_table, int (*hf)(struct hash_table*,
   //int hash_index = hash_function(hash_table, key);
   int hash_index = (*hf)(hash_table, key);
 
-  // add the node to the beginning of the list 
+  // add the node to the beginning of the list
   new_node->next = hash_table->array[hash_index];
   hash_table->array[hash_index] = new_node;
 
@@ -138,11 +138,11 @@ int hash_table_remove(struct hash_table* hash_table, int (*hf)(struct hash_table
 
   //int hash_index = hash_function(hash_table, key);
   int hash_index = (*hf)(hash_table, key);
-  
-  // in this case the key is associated with the first node 
+
+  // in this case the key is associated with the first node
   struct node* temp = hash_table->array[hash_index];
   if( temp != NULL ) {
-    if( strcmp(temp->key,key) == 0) {    
+    if( strcmp(temp->key,key) == 0) {
       printf("removing %s from hash table, should match %s\n", temp->key, key);
       hash_table->array[hash_index] = temp->next;
       assert(temp->key);
@@ -154,22 +154,22 @@ int hash_table_remove(struct hash_table* hash_table, int (*hf)(struct hash_table
     }
   }
 
-  // in this case the product is not the first one 
-  // define another node "prev" for the previous node. 
+  // in this case the product is not the first one
+  // define another node "prev" for the previous node.
   struct node* prev;
 
   while (temp != NULL && strcmp(temp->key, key) != 0) {
     prev = temp;
-    temp = temp->next;    
+    temp = temp->next;
   }
 
-  // if temp is NULL, then the key was not found. 
+  // if temp is NULL, then the key was not found.
   if(temp == NULL) {
     printf("The key %s not found in hash table. ", key);
     return 0;
   }
 
-  // if temp was not NULL, then remove the found node and free it 
+  // if temp was not NULL, then remove the found node and free it
   prev->next = temp->next;
   printf("trying to free: %s\n",temp->key);
   assert(temp->key);
@@ -184,20 +184,29 @@ int hash_table_collisions(struct hash_table* hash_table) {
   /*
    * This function should count the number of collisions in the hash table
    *
-   * this would essentially be the total number of elements above 1 for each 
-   * "bucket" or hash array index. If there is only one element associated 
+   * this would essentially be the total number of elements above 1 for each
+   * "bucket" or hash array index. If there is only one element associated
    * with a bucket, it would not count as a collision. Two elements would count
-   * as one collision, three elements would count as 2 collisions and so on. 
+   * as one collision, three elements would count as 2 collisions and so on.
    */
   int num_col = 0;
-  
-  // code goes here: 
+
+  for (int i = 0; i < hash_table->size; i++) {
+    //create temp node to operate on
+    //loop through each key
+    struct node *temp = hash_table->array[i];
+    //while temp and temp->next exist
+    while (temp != NULL and temp->next != NULL) {
+      temp = temp->next; //go next in key
+      num_col++; //add 1 to collision counter
+     }
+  }
 
   return num_col;
 }
 
 void display(struct hash_table* hash_table) {
-  
+
   printf("Hash table, size=%d, total=%d\n",hash_table->size, hash_table->total);
   int i = 0;
   for (i = 0; i < hash_table->size; i++) {
