@@ -7,7 +7,7 @@
 #include <stdlib.h>
 #include <assert.h>
 #include <string.h>
-
+#include <string.h>
 #include "node.h"
 #include "hash_table.h"
 
@@ -46,7 +46,12 @@ int hash_function2(struct hash_table* hash_table, char* key) {
    * to modify it to create an improved hash function:
    */
 
-  return ( (int) key[0] ) % hash_table->size;
+   // ((691 * first letter) * 2nd to last letter ) + ((73 * 2nd letter) * last letter)
+   int hash = (691 + (int)key[0]) * (int)key[strlen(key)-2] + (73 * (int)key[1]) * (int)key[strlen(key)-1];
+
+
+   //take resultant of above calculation and resrict it to indexes 0-7
+   return hash % hash_table->size;
 }
 
 struct hash_table* hash_table_create(int array_size) {
@@ -193,10 +198,10 @@ int hash_table_collisions(struct hash_table* hash_table) {
 
   for (int i = 0; i < hash_table->size; i++) {
     //create temp node to operate on
-    //loop through each key
+    //loop through each key (array index)
     struct node *temp = hash_table->array[i];
     //while temp and temp->next exist
-    while (temp != NULL and temp->next != NULL) {
+    while (temp != NULL && temp->next != NULL) {
       temp = temp->next; //go next in key
       num_col++; //add 1 to collision counter
      }
